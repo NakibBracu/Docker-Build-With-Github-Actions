@@ -1,0 +1,123 @@
+PS C:\Users\Nakib> docker images
+REPOSITORY                        TAG                   IMAGE ID       CREATED       SIZE
+moviesapp                         dev                   5e8a470a0786   6 days ago    53.4MB
+movieapisample                    v1                    36fe6f80d9eb   9 days ago    218MB
+moviesapi                         dev                   719d934947b1   9 days ago    218MB
+console-app-input                 v3cmdplusentrypoint   e35bb6fa1240   10 days ago   193MB
+console-app-input                 v2onlydotnet          1b1b3daeaca0   10 days ago   193MB
+console-app-input                 dev                   a5a65d6c177f   10 days ago   193MB
+mcr.microsoft.com/dotnet/aspnet   8.0                   0e42b4826041   3 weeks ago   218MB
+PS C:\Users\Nakib> docker pull nakibrahaman/mynginx
+Using default tag: latest
+latest: Pulling from nakibrahaman/mynginx
+9824c27679d3: Already exists
+6bc572a340ec: Already exists
+403e3f251637: Already exists
+9adfbae99cb7: Already exists
+7a8a46741e18: Already exists
+c9ebe2ff2d2c: Already exists
+a992fbc61ecc: Already exists
+cb1ff4086f82: Already exists
+36e2d52bc600: Pull complete
+Digest: sha256:dba4504162a2ef24f66ff43c6c5e4c19ff72c857f88ae2291c31274c1a887f45
+Status: Downloaded newer image for nakibrahaman/mynginx:latest
+docker.io/nakibrahaman/mynginx:latest
+
+What's next:
+    View a summary of image vulnerabilities and recommendations → docker scout quickview nakibrahaman/mynginx
+PS C:\Users\Nakib> docker images
+REPOSITORY                        TAG                   IMAGE ID       CREATED         SIZE
+nakibrahaman/mynginx              latest                80b36b8cd9e7   2 minutes ago   52.5MB
+moviesapp                         dev                   5e8a470a0786   6 days ago      53.4MB
+movieapisample                    v1                    36fe6f80d9eb   9 days ago      218MB
+moviesapi                         dev                   719d934947b1   9 days ago      218MB
+console-app-input                 dev                   a5a65d6c177f   10 days ago     193MB
+console-app-input                 v3cmdplusentrypoint   e35bb6fa1240   10 days ago     193MB
+console-app-input                 v2onlydotnet          1b1b3daeaca0   10 days ago     193MB
+mcr.microsoft.com/dotnet/aspnet   8.0                   0e42b4826041   3 weeks ago     218MB
+PS C:\Users\Nakib> docker images | grep mynginx:latest
+grep : The term 'grep' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of
+the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:17
++ docker images | grep mynginx:latest
++                 ~~~~
+    + CategoryInfo          : ObjectNotFound: (grep:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\Nakib> docker images | Select-String "mynginx:latest"
+PS C:\Users\Nakib> docker images | Where-Object { $_ -match "mynginx:latest" }
+PS C:\Users\Nakib> docker images --format "{{.Repository}}:{{.Tag}}" | Select-String "mynginx:latest"
+
+nakibrahaman/mynginx:latest
+
+
+PS C:\Users\Nakib> docker images | Select-String "mynginx"
+
+nakibrahaman/mynginx              latest                80b36b8cd9e7   4 minutes ago   52.5MB
+
+
+PS C:\Users\Nakib> docker run -d -p 8080:80 --name test-nginx nakibrahaman/mynginx:latest
+b2055f0a660ed0cc9b98b221208002acabf16b7ac57c3f051524c8cc05929699
+PS C:\Users\Nakib> docker ps
+CONTAINER ID   IMAGE                         COMMAND                  CREATED                  STATUS         PORTS                                     NAMES
+b2055f0a660e   nakibrahaman/mynginx:latest   "/docker-entrypoint.…"   Less than a second ago   Up 3 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   test-nginx
+PS C:\Users\Nakib> docker stop b20
+b20
+PS C:\Users\Nakib> docker ps -a
+CONTAINER ID   IMAGE                         COMMAND                  CREATED         STATUS                     PORTS                  NAMES
+b2055f0a660e   nakibrahaman/mynginx:latest   "/docker-entrypoint.…"   6 minutes ago   Exited (0) 3 seconds ago                          test-nginx
+d723d1b1a582   moviesapp:dev                 "/docker-entrypoint.…"   6 days ago      Exited (255) 3 days ago    0.0.0.0:4400->80/tcp   laughing_ride
+PS C:\Users\Nakib> docker rm $(docker ps -a -q) -f
+b2055f0a660e
+d723d1b1a582
+PS C:\Users\Nakib> docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\Users\Nakib> docker images
+REPOSITORY                        TAG                   IMAGE ID       CREATED          SIZE
+nakibrahaman/mynginx              latest                80b36b8cd9e7   16 minutes ago   52.5MB
+moviesapp                         dev                   5e8a470a0786   6 days ago       53.4MB
+movieapisample                    v1                    36fe6f80d9eb   9 days ago       218MB
+moviesapi                         dev                   719d934947b1   9 days ago       218MB
+console-app-input                 v2onlydotnet          1b1b3daeaca0   10 days ago      193MB
+console-app-input                 dev                   a5a65d6c177f   10 days ago      193MB
+console-app-input                 v3cmdplusentrypoint   e35bb6fa1240   10 days ago      193MB
+mcr.microsoft.com/dotnet/aspnet   8.0                   0e42b4826041   3 weeks ago      218MB
+PS C:\Users\Nakib> docker pull nakibrahaman/mynginx
+Using default tag: latest
+latest: Pulling from nakibrahaman/mynginx
+9824c27679d3: Already exists
+6bc572a340ec: Already exists
+403e3f251637: Already exists
+9adfbae99cb7: Already exists
+7a8a46741e18: Already exists
+c9ebe2ff2d2c: Already exists
+a992fbc61ecc: Already exists
+cb1ff4086f82: Already exists
+82c0476a174a: Pull complete
+Digest: sha256:354b04813e8b7563289a29999ef95dee2759b8b37bf84cc4ce3630e357f6112c
+Status: Downloaded newer image for nakibrahaman/mynginx:latest
+docker.io/nakibrahaman/mynginx:latest
+
+What's next:
+    View a summary of image vulnerabilities and recommendations → docker scout quickview nakibrahaman/mynginx
+PS C:\Users\Nakib> docker run -d -p 8080:80 --name test-nginx nakibrahaman/mynginx:latest
+14bfea57a0c9fc277a8f3c3a9f2bb81ca8ca4a8e796075b8db9d28a16817abf6
+PS C:\Users\Nakib> docker ps
+CONTAINER ID   IMAGE                         COMMAND                  CREATED          STATUS              PORTS                                     NAMES
+14bfea57a0c9   nakibrahaman/mynginx:latest   "/docker-entrypoint.…"   19 seconds ago   Up About a minute   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   test-nginx
+PS C:\Users\Nakib> docker stop test-nginx
+test-nginx
+PS C:\Users\Nakib> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\Users\Nakib> docker images
+REPOSITORY                        TAG                   IMAGE ID       CREATED          SIZE
+nakibrahaman/mynginx              latest                afac9383725b   3 minutes ago    52.5MB
+nakibrahaman/mynginx              <none>                80b36b8cd9e7   19 minutes ago   52.5MB
+moviesapp                         dev                   5e8a470a0786   6 days ago       53.4MB
+movieapisample                    v1                    36fe6f80d9eb   9 days ago       218MB
+moviesapi                         dev                   719d934947b1   9 days ago       218MB
+console-app-input                 dev                   a5a65d6c177f   10 days ago      193MB
+console-app-input                 v3cmdplusentrypoint   e35bb6fa1240   10 days ago      193MB
+console-app-input                 v2onlydotnet          1b1b3daeaca0   10 days ago      193MB
+mcr.microsoft.com/dotnet/aspnet   8.0                   0e42b4826041   3 weeks ago      218MB
+PS C:\Users\Nakib>
