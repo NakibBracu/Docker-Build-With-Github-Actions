@@ -22,12 +22,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Set lowercase repo name
+        run: echo "REPO_NAME=$(echo '${{ github.event.repository.name }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v1.${{ github.run_number }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:v1.${{ github.run_number }}
 
   deploy:
     needs: build
@@ -42,11 +45,11 @@ jobs:
 
       - name: Pull exact version
         run: |
-          docker pull "${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v1.${{ github.run_number }}"
+          docker pull "${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:v1.${{ github.run_number }}"
 
       - name: Stop & remove existing container (if any)
         run: |
-          NAME="${{ github.event.repository.name }}"
+          NAME="${{ env.REPO_NAME }}"
           if [ "$(docker ps -q -f name=^/${NAME}$)" ]; then
             docker stop "${NAME}"
           fi
@@ -57,7 +60,7 @@ jobs:
       - name: Run container on port 4000
         run: |
           docker run -d \
-            --name "${{ github.event.repository.name }}" \
+            --name "${{ env.REPO_NAME }}" \
             --restart unless-stopped \
             -p 4000:80 \
-            "${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v1.${{ github.run_number }}"
+            "${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:v1.${{ github.run_number }}"
